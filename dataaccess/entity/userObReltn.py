@@ -1,8 +1,7 @@
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
-from models.hiring_status import HiringStatus
-from models.userObReltnType import UserObReltnType
-
+from models.enums.hiring_status import HiringStatus
+from models.enums.userObReltnType import UserObReltnType
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -12,7 +11,7 @@ class UserObReltn(db.Model):
     __tablename__ = 'USR_OB_RELTN'
     id = db.Column("id", db.Integer, primary_key=True, nullable=False)
     userId = db.Column("userId", db.String)
-    hiringStatus = db.Column("hiringStatus",  db.Enum(HiringStatus))
+    hiringStatus = db.Column("hiringStatus", db.Enum(HiringStatus))
     userObReltn = db.Column("userObReltn", db.Enum(UserObReltnType))
     jobId = db.Column("jobId", db.Integer)
 

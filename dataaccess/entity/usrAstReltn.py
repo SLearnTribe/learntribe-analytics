@@ -1,7 +1,7 @@
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
-from models.assessment_status import AssessmentStatus
-from models.userAstReltnType import UserAstReltnType
+from models.enums.assessment_status import AssessmentStatus
+from models.enums.userAstReltnType import UserAstReltnType
 
 db = SQLAlchemy()
 ma = Marshmallow()

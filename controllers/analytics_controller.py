@@ -1,22 +1,7 @@
-import json
-
 from flask_classful import FlaskView, route
-from flask import jsonify, request, Flask
-from flask_jwt_extended import jwt_required
-from flask_oidc import OpenIDConnect
+from flask import jsonify, request
 
 from service.analytics_service import AnalyticsService
-
-from okta_jwt_verifier import AccessTokenVerifier, JWTVerifier
-import asyncio
-
-
-
-
-
-
-
-oidc = OpenIDConnect()
 
 
 class AnalyticsControllerView(FlaskView):
@@ -32,12 +17,26 @@ class AnalyticsControllerView(FlaskView):
             return jsonify(message="Keycloak_id can't be empty"), 402
         result = self.analytics_service.retrieve_candidate_activities(keycloak_id=keycloak_id)
 
-        return jsonify(result=result), 200
+        return result, 202
 
-    @route('/candidate/jobs')
+    @route('/candidate/jobs', methods=['POST'])
     def evaluate_considered_jobs(self):
-        return
+        keycloak_id = request.json['keyCloakId']
+        if keycloak_id is None:
+            return jsonify(message="Keycloak_id can't be empty"), 402
+        result = self.analytics_service.retrieve_considered_jobs(keycloak_id=keycloak_id)
+        return result, 202
 
-    @route('/hr/activities')
+    @route('/hr/activities', methods=['POST'])
     def evaluate_hr_hirings(self):
-        return
+        keycloak_id = request.json['keyCloakId']
+        page = request.args['page']
+        limit = request.args['limit']
+        category = request.args['category']
+        if keycloak_id is None:
+            return jsonify(message="Keycloak_id can't be empty"), 402
+        if category == 'IN_PROGRESS':
+            result = self.analytics_service.evaluate_hirings_in_progress(keycloak_id=keycloak_id)
+        else:
+            result = self.analytics_service.evaluate_hirings_in_last_month(keycloak_id=keycloak_id)
+        return result, 202
