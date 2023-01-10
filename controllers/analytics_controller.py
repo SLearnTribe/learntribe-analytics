@@ -30,13 +30,15 @@ class AnalyticsControllerView(FlaskView):
     @route('/hr/activities', methods=['POST'])
     def evaluate_hr_hirings(self):
         keycloak_id = request.json['keyCloakId']
-        page = request.args['page']
-        limit = request.args['limit']
-        category = request.args['category']
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('limit', 25, type=int)
+        category = request.args.get('category')
         if keycloak_id is None:
             return jsonify(message="Keycloak_id can't be empty"), 402
         if category == 'IN_PROGRESS':
             result = self.analytics_service.evaluate_hirings_in_progress(keycloak_id=keycloak_id)
         else:
-            result = self.analytics_service.evaluate_hirings_in_last_month(keycloak_id=keycloak_id)
+            result = self.analytics_service.evaluate_hirings_in_last_month(keycloak_id=keycloak_id,
+                                                                           page=page,
+                                                                           per_page=per_page)
         return result, 202

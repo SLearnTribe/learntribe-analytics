@@ -1,14 +1,33 @@
 import json
 from flask import jsonify
+from sqlalchemy import and_
+from sqlalchemy.orm import joinedload
 
-from dataaccess.entity.othersBusiness import UserBusiness
-from dataaccess.othersBusinessRepository import find_all_by_id, find_by_user_id
+from converters.analytics_converter import AnalyticsConverter
+from dataaccess.entity.othersBusiness import OthersBusiness
+from dataaccess.entity.userObReltn import UserObReltn
+from dataaccess.othersBusinessRepository import find_all_by_id, find_by_user_id, find_by_user_id_and_current_date
 from models.response.candidatea_ctivities_response import CandidateActivitiesResponse
 from dataaccess.userAstReltnRepository import count_by_user_id_and_filter
 from dataaccess.userObReltnRepository import count_by_user_id_and_status, find_by_user_id_and_status
+from models.response.hr_hiriing_response import HrHiringsResponse
 
 
 class AnalyticsService:
+
+    def create_hiring_response(self, others_business: OthersBusiness, hiring_status: str):
+        job_count = (
+            UserObReltn.query
+            .filter(
+                and_(UserObReltn.others_business_id == others_business.id, UserObReltn.hiring_status == hiring_status))
+            .count()
+        )
+
+        if job_count > 0:
+            return AnalyticsConverter.to_response(others_business, job_count)
+
+        return HrHiringsResponse()
+
     def retrieve_candidate_activities(self, keycloak_id: str):
         if keycloak_id is None:
             return jsonify(message="Keycloak_Id cannot be null"), 402
@@ -33,18 +52,39 @@ class AnalyticsService:
         result = find_all_by_id(job_id=job_id)
         return result
 
-    def evaluate_hirings_in_progress(self, keycloak_id: str):
+    def evaluate_hirings_in_progress(self, keycloak_id: str, page: int, per_page: int):
         if keycloak_id is None:
             return jsonify(message="Keycloak_Id cannot be null"), 402
 
-        created_jobs = find_by_user_id(user_id=keycloak_id)
-        return result
+        created_jobs = find_by_user_id(user_id=keycloak_id, page=page, per_page=per_page)
 
-    def evaluate_hirings_in_last_month(self, keycloak_id: str):
+        responses = []
+        for job in created_jobs:
+            response = self.create_hiring_response(job, "IN_PROGRESS")
+            # job_count = UserObReltnRepository.query.filter_by(job_id=job.id, hiring_status="IN_PROGRESS").count()
+            if response.job_count > 0:
+                responses.append(response)
+
+        return jsonify(responses)
+
+    def evaluate_hirings_in_last_month(self, keycloak_id: str, page: int, per_page: int):
         if keycloak_id is None:
-            return jsonify(message="Keycloak_Id cannot be null"), 402
+            return jsonify({"error": "User Id cannot be null"})
 
-        created_jobs = find_by_user_id(user_id=keycloak_id)
-        return result
+        created_jobs = (OthersBusiness.query
+                        # .options(joinedload(OthersBusiness.user_ob_reltns))
+                        .filter(and_(OthersBusiness.user_id == keycloak_id, OthersBusiness.current_date.isnot(None)))
+                        .paginate(page=page, per_page=per_page)
+                        .items
+                        )
+        created_jobs = find_by_user_id_and_current_date(user_id=keycloak_id,
+                                                        page=page,
+                                                        per_page=per_page)
 
-    def create_hr_hirings_response(self, othr_buss_resp: UserBusiness):
+        responses = []
+        for job in created_jobs:
+            response = self.create_hiring_response(job, "HIRED")
+            if response.job_count > 0:
+                responses.append(response)
+
+        return jsonify({"hiring_responses": responses})
