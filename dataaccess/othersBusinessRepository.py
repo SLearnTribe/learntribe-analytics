@@ -21,23 +21,26 @@ def find_all_by_id(job_id: list):
 
 
 def find_by_user_id(user_id: str, page: int, per_page: int):
-    others_business = OthersBusiness.query.filter_by(createdBy=user_id) \
+    others_business = OthersBusiness.query.filter_by(created_by=user_id) \
         .paginate(page=page, per_page=per_page) \
         .items
     # return others_business
     if others_business:
+        # print("Rahul1")
         result = others_businesses_schema.dump(others_business)
-        return jsonify(result)
+        # print(result)
+        return jsonify(result), 200
     else:
+        # print("Rahul2")
         return jsonify(message="The keycloakID does not exist or wrong status"), 404
 
 
 def find_by_user_id_and_current_date(user_id: str, page: int, per_page: int):
     others_businesses = OthersBusiness.query \
         .filter(and_(OthersBusiness.id == user_id,
-                     OthersBusiness.createdDate >= (datetime.now() - timedelta(days=30)))) \
+                     OthersBusiness.created_date >= (datetime.now() - timedelta(days=30)))) \
         .paginate(page=page, per_page=per_page) \
-        .all()
+        .items
     #   .items
 
     if others_businesses:

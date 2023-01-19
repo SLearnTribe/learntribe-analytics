@@ -9,19 +9,23 @@ from dataaccess.entity.userObReltn import UserObReltn
 from dataaccess.othersBusinessRepository import find_all_by_id, find_by_user_id, find_by_user_id_and_current_date
 from models.response.candidate_activities_response import CandidateActivitiesResponse
 from dataaccess.userAstReltnRepository import count_by_user_id_and_filter
-from dataaccess.userObReltnRepository import count_by_user_id_and_status, find_by_user_id_and_status
+from dataaccess.userObReltnRepository import count_by_user_id_and_status, find_by_user_id_and_status, \
+    count_by_job_hiring_status
 from models.response.hr_hiriing_response import HrHiringsResponse
 
 
 class AnalyticsService:
 
     def create_hiring_response(self, others_business: OthersBusiness, hiring_status: str):
-        job_count = (
-            UserObReltn.query
-            .filter(
-                and_(UserObReltn.others_business_id == others_business.id, UserObReltn.hiring_status == hiring_status))
-            .count()
-        )
+        # print("Rahul")
+        print(others_business.id)
+        job_count = count_by_job_hiring_status(job_id=others_business.id, hiring_status=hiring_status)
+        # job_count = (
+        #     UserObReltn.query
+        #     .filter(
+        #         and_(UserObReltn.others_business_id == others_business.id, UserObReltn.hiring_status == hiring_status))
+        #     .count()
+        # )
 
         if job_count > 0:
             return AnalyticsConverter.to_response(others_business, job_count)
@@ -58,8 +62,9 @@ class AnalyticsService:
             return jsonify(message="Keycloak_Id cannot be null"), 402
 
         created_jobs = find_by_user_id(user_id=keycloak_id, page=page, per_page=per_page)
-
         responses = []
+        if created_jobs[1] == 404:
+            return jsonify(responses)
         for job in created_jobs:
             response = self.create_hiring_response(job, "IN_PROGRESS")
             # job_count = UserObReltnRepository.query.filter_by(job_id=job.id, hiring_status="IN_PROGRESS").count()

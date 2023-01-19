@@ -1,5 +1,7 @@
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import and_
+
 from dataaccess.entity.userObReltn import UserObReltn, UserObReltnSchema
 
 db = SQLAlchemy()
@@ -30,9 +32,10 @@ def find_by_user_id_and_status(keycloak_id: str, hiring_status: str):
     # user_ob_reltn = UserObReltn.query.all()
     if user_ob_reltn:
         result = user_ob_schema.dump(user_ob_reltn)
-        print("Rahul###############", result)
+        # print("Rahul###############", result)
         return jsonify(result)
     else:
+        # print("Rahul")
         return jsonify(message="The keycloakID does not exist or wrong status"), 404
 
 
@@ -41,11 +44,12 @@ def count_by_user_id_and_status(keycloak_id: str, hiring_status: str):
     if count is not None:
         return count
     else:
+        print("Rahul")
         return jsonify(message="The keycloakID does not exist or wrong status"), 404
 
 
 def count_by_job_hiring_status(job_id: str, hiring_status: str):
-    count = UserObReltn.query.filter(jobId=job_id, hiringStatus=hiring_status).count()
+    count = UserObReltn.query.filter_by(and_(job_id=job_id, hiring_status=hiring_status)).count()
     if count is not None:
         return count
     else:
