@@ -26,10 +26,10 @@ def find_by_related_job_id(keycloak_id: str, job_id: str):
 
 
 def find_by_user_id_and_status(keycloak_id: str, hiring_status: str):
-    # user_ob_reltn = UserObReltn.query.filter_by(userId=keycloak_id, hiringStatus=hiring_status).first()
-    user_ob_reltn = UserObReltn.query.all()
+    user_ob_reltn = UserObReltn.query.filter_by(user_id=keycloak_id, hiring_status=hiring_status).first()
+    # user_ob_reltn = UserObReltn.query.all()
     if user_ob_reltn:
-        result = users_ob_schema.dump(user_ob_reltn)
+        result = user_ob_schema.dump(user_ob_reltn)
         print("Rahul###############", result)
         return jsonify(result)
     else:
@@ -37,7 +37,7 @@ def find_by_user_id_and_status(keycloak_id: str, hiring_status: str):
 
 
 def count_by_user_id_and_status(keycloak_id: str, hiring_status: str):
-    count = UserObReltn.query.filter_by(userId=keycloak_id, hiringStatus=hiring_status).count()
+    count = UserObReltn.query.filter_by(user_id=keycloak_id, hiring_status=hiring_status).count()
     if count is not None:
         return count
     else:

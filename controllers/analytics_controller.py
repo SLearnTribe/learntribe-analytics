@@ -36,7 +36,9 @@ class AnalyticsControllerView(FlaskView):
         if keycloak_id is None:
             return jsonify(message="Keycloak_id can't be empty"), 402
         if category == 'IN_PROGRESS':
-            result = self.analytics_service.evaluate_hirings_in_progress(keycloak_id=keycloak_id)
+            result = self.analytics_service.evaluate_hirings_in_progress(keycloak_id=keycloak_id,
+                                                                         page=page,
+                                                                         per_page=per_page)
         else:
             result = self.analytics_service.evaluate_hirings_in_last_month(keycloak_id=keycloak_id,
                                                                            page=page,

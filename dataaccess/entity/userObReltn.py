@@ -8,12 +8,12 @@ ma = Marshmallow()
 
 
 class UserObReltn(db.Model):
-    __tablename__ = 'USR_OB_RELTN'
-    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
-    userId = db.Column("userId", db.String)
-    hiringStatus = db.Column("hiringStatus", db.Enum(HiringStatus))
-    userObReltn = db.Column("userObReltn", db.Enum(UserObReltnType))
-    jobId = db.Column("jobId", db.Integer)
+    __tablename__ = 'usr_ob_reltn'
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.String)
+    hiring_status = db.Column(db.Enum(HiringStatus))
+    user_ob_reltn = db.Column(db.Enum(UserObReltnType))
+    job_id = db.Column(db.Integer)
 
     def __repr__(self):
         return f'<User {self.userId}>'
@@ -21,8 +21,9 @@ class UserObReltn(db.Model):
 
 class UserObReltnSchema(ma.Schema):
     class Meta:
-        fields = ("id",
-                  "userId",
-                  "hiringStatus",
-                  "userObReltn",
-                  "jobId")
+        model = UserObReltn
+        # fields = ("id",
+        #           "userId",
+        #           "hiringStatus",
+        #           "userObReltn",
+        #           "jobId")

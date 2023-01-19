@@ -8,13 +8,13 @@ ma = Marshmallow()
 
 
 class UserAstReltn(db.Model):
-    __tablename__ = 'USR_AST_RELTN'
+    __tablename__ = 'usr_ast_reltn'
     id = db.Column("id", db.Integer, primary_key=True, nullable=False)
-    userId = db.Column("userId", db.String)
-    assessmentId = db.Column("assessmentId", db.Integer)
-    assessmentTitle = db.Column("assessmentTitle", db.String)
-    status = db.Column("status", db.Enum(AssessmentStatus))
-    userAstReltnType = db.Column("userAstReltnType", db.Enum(UserAstReltnType))
+    user_id = db.Column(db.String)
+    assessment_id = db.Column(db.Integer)
+    assessment_title = db.Column(db.String)
+    status = db.Column(db.Enum(AssessmentStatus))
+    user_ast_reltn_type = db.Column(db.Enum(UserAstReltnType))
 
     def __repr__(self):
         return f'<User {self.userId}>'
@@ -22,9 +22,10 @@ class UserAstReltn(db.Model):
 
 class UserAstReltnSchema(ma.Schema):
     class Meta:
-        fields = ("id",
-                  "userId",
-                  "assessmentId",
-                  "assessmentTitle",
-                  "status",
-                  "userAstReltnType")
+        model = UserAstReltn
+        # fields = ("id",
+        #           "userId",
+        #           "assessmentId",
+        #           "assessmentTitle",
+        #           "status",
+        #           "userAstReltnType")

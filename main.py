@@ -1,41 +1,16 @@
-from flask import Flask, request, jsonify
+import json
+from flask import Flask
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, get_jwt_header
+from authorization.jwt_validation import jwt_verification
 from controllers.analytics_controller import *
 from dataaccess.entity.userObReltn import *
 from dataaccess.entity.usrAstReltn import *
-from flask_oidc import OpenIDConnect
-from okta_jwt_verifier import AccessTokenVerifier
-import jwt
-
-from helpers.authorization import AuthorizationHelper
 
 app = Flask(__name__)
-# app.config['JWT_SECRET_KEY'] = 'super-secret'
-# app.config['JWT_ENCODE_ISSUER'] = 'http://localhost:8085/auth/realms/master'
-# app.config['JWT_DEFAULT_REALM'] = 'master'
-# app.config.update({
-#     'SECRET_KEY': 'super-secret',
-#     'TESTING': True,
-#     'DEBUG': True,
-#     'OIDC_CLIENT_SECRETS': 'client-secrets.json',
-#     'OIDC_ID_TOKEN_COOKIE_SECURE': False,
-#     'OIDC_REQUIRE_VERIFIED_EMAIL': False,
-#     'OIDC_USER_INFO_ENABLED': True,
-#     'OIDC_OPENID_REALM': 'master',
-#     'OIDC_SCOPES': ["openid", "web-origins", "phone", "profile",
-#                     "offline_access", "microprofile-jwt", "address", "roles", "email"],
-#     'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
-# })
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://keycloak:password@localhost:5432/rahul'
-# dialect+driver://username:password@host:port/database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://keycloak:password@38.242.132.44:5432/inquisitve'
 CORS(app)
-JWTManager(app)
 db.init_app(app)
 ma.init_app(app)
-
-# oidc.init_app(app)
-ah = AuthorizationHelper('./configurations/authorization.ini')
 
 
 @app.cli.command('db_create')
@@ -72,24 +47,12 @@ def db_seed():
 AnalyticsControllerView.register(app, route_base='/api/v1/analytics')
 
 
-@app.route('/access', methods=['POST'])
-def temp_access():
-    uid = request.form['uid']
-    access_token = create_access_token(identity=uid)
-    return jsonify(token=access_token), 200
-
-
-@app.route('/checks', methods=['POST'])
-def checks():
-    token_header = request.headers['Authorization'].split(' ')[1]
-    # return token_header
-    txt = ah.verify_jwt(token_header)[0]
-    if txt:
-        return jsonify(result="True"), 200
-    else:
-        return jsonify(result="False"), 400
-    # return jsonify(temp=ah.verify_jwt(token_header)), 403
+@app.route('/validate', methods=['GET'])
+@jwt_verification
+def checks(decoded_jwt):
+    return json.dumps({"message": "JWT verified",
+                       "sub": decoded_jwt['sub']})
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=8081, debug=True)
+    app.run(host="localhost", port=15351, debug=True)

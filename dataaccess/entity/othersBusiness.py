@@ -1,4 +1,6 @@
 from flask_marshmallow import Marshmallow
+from flask_marshmallow.fields import fields
+from marshmallow_enum import EnumField
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -43,33 +45,47 @@ class OthersBusiness(db.Model):
         return f'<User {self.id}>'
 
 
-class OthersBusinessSchema(ma.ModelSchema):
+class OthersBusinessSchema(ma.Schema):
     class Meta:
         model = OthersBusiness
 
-        id = ma.fields.Int(required=True)
-        title = ma.fields.Str()
-        description = ma.fields.Str()
-        rolesAndResponsibilities = ma.fields.Str()
-        qualificationRequired = ma.fields.Str()
-        requiredSkills = ma.fields.Str()
-        experienceRequired = ma.fields.Int()
-        createdBy = ma.fields.Str()
-        businessName = ma.fields.Str()
-        location = ma.fields.Str()
-        createdDate = ma.fields.DateTime()
-        JobStatus = ma.fields.Enum("JobStatus")
-        employmentType = ma.fields.Enum("EmploymentType")
-        # fields = ("id",
-        #           "title",
-        #           "description",
-        #           "rolesAndResponsibilities",
-        #           "qualificationRequired",
-        #           "requiredSkills",
-        #           "experienceRequired",
-        #           "createdBy",
-        #           "businessName",
-        #           "location",
-        #           "createdDate",
-        #           "JobStatus",
-        #           "employmentType")
+    id = fields.Integer(dump_only=True)
+    title = fields.String()
+    description = fields.String()
+    rolesAndResponsibilities = fields.String()
+    qualificationRequired = fields.String()
+    requiredSkills = fields.String()
+    experienceRequired = fields.Integer()
+    createdBy = fields.String()
+    businessName = fields.String()
+    location = fields.String()
+    createdDate = fields.DateTime()
+    JobStatus = EnumField(enum=JobStatus)
+    employmentType = EnumField(enum=EmploymentType)
+
+    # id = ma.fields.Int(required=True)
+    # title = ma.fields.Str()
+    # description = ma.fields.Str()
+    # rolesAndResponsibilities = ma.fields.Str()
+    # qualificationRequired = ma.fields.Str()
+    # requiredSkills = ma.fields.Str()
+    # experienceRequired = ma.fields.Int()
+    # createdBy = ma.fields.Str()
+    # businessName = ma.fields.Str()
+    # location = ma.fields.Str()
+    # createdDate = ma.fields.DateTime()
+    # JobStatus = ma.fields.Enum("JobStatus")
+    # employmentType = ma.fields.Enum("EmploymentType")
+    # fields = ("id",
+    #           "title",
+    #           "description",
+    #           "rolesAndResponsibilities",
+    #           "qualificationRequired",
+    #           "requiredSkills",
+    #           "experienceRequired",
+    #           "createdBy",
+    #           "businessName",
+    #           "location",
+    #           "createdDate",
+    #           "JobStatus",
+    #           "employmentType")

@@ -7,7 +7,7 @@ from converters.analytics_converter import AnalyticsConverter
 from dataaccess.entity.othersBusiness import OthersBusiness
 from dataaccess.entity.userObReltn import UserObReltn
 from dataaccess.othersBusinessRepository import find_all_by_id, find_by_user_id, find_by_user_id_and_current_date
-from models.response.candidatea_ctivities_response import CandidateActivitiesResponse
+from models.response.candidate_activities_response import CandidateActivitiesResponse
 from dataaccess.userAstReltnRepository import count_by_user_id_and_filter
 from dataaccess.userObReltnRepository import count_by_user_id_and_status, find_by_user_id_and_status
 from models.response.hr_hiriing_response import HrHiringsResponse
@@ -48,6 +48,7 @@ class AnalyticsService:
         '''TODO : Pending serialization of enum'''
         in_progress = find_by_user_id_and_status(keycloak_id=keycloak_id, hiring_status="IN_PROGRESS")
         '''take out job_id from above result'''
+        print(in_progress)
         job_id = None
         result = find_all_by_id(job_id=job_id)
         return result
@@ -71,12 +72,12 @@ class AnalyticsService:
         if keycloak_id is None:
             return jsonify({"error": "User Id cannot be null"})
 
-        created_jobs = (OthersBusiness.query
-                        # .options(joinedload(OthersBusiness.user_ob_reltns))
-                        .filter(and_(OthersBusiness.user_id == keycloak_id, OthersBusiness.current_date.isnot(None)))
-                        .paginate(page=page, per_page=per_page)
-                        .items
-                        )
+        # created_jobs = (OthersBusiness.query
+        #                 # .options(joinedload(OthersBusiness.user_ob_reltns))
+        #                 .filter(and_(OthersBusiness.user_id == keycloak_id, OthersBusiness.current_date.isnot(None)))
+        #                 .paginate(page=page, per_page=per_page)
+        #                 .items
+        #                 )
         created_jobs = find_by_user_id_and_current_date(user_id=keycloak_id,
                                                         page=page,
                                                         per_page=per_page)

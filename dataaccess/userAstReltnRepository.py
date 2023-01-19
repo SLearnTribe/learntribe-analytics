@@ -28,7 +28,7 @@ def find_by_user_id_and_filter(keycloak_id: str, status: str):
 
 
 def count_by_user_id_and_filter(keycloak_id: str, status: str):
-    count = UserAstReltn.query.filter_by(userId=keycloak_id, status=status).count()
+    count = UserAstReltn.query.filter_by(user_id=keycloak_id, status=status).count()
     if count is not None:
         return count
     else:
