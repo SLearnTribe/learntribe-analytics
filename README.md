@@ -16,3 +16,10 @@ Run the application:
 - python main.py
 
 In postman and navigate to http://localhost:<port_no_specified/<routes>
+
+# Command used for requirements.txt
+Dependencies of current project
+- python -m pipreqs.pipreqs
+
+Dependencies of current Environment
+- pip freeze > requirements.txt
