@@ -1,12 +1,13 @@
 import json
 from flask import Flask
 from flask_cors import CORS
-from authorization.jwt_validation import jwt_verification
+from authorization.jwt_verification import jwt_verification
 from controllers.analytics_controller import *
 from dataaccess.entity.userObReltn import *
 from dataaccess.entity.usrAstReltn import *
 
 app = Flask(__name__)
+# Format : sql://username:password@uri/db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://keycloak:password@38.242.132.44:5432/inquisitve'
 CORS(app)
 db.init_app(app)

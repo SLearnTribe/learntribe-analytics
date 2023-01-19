@@ -1,5 +1,6 @@
 """
-Created on 18/11/18
+Created on 19/01/23
+
 Author Rahul Joshi
 
 Function to deal with JWT exchanged with keycloak.
@@ -27,7 +28,9 @@ KEYCLOAK_PUBLIC_KEY = '-----BEGIN PUBLIC KEY-----' + \
 def jwt_verification(f):
     """
     Decorator for the JWT validation.
+
     :param :
+
     :return: Decoded JWT
     """
 
