@@ -11,11 +11,13 @@ others_business_schema = OthersBusinessSchema()
 others_businesses_schema = OthersBusinessSchema(many=True)
 
 
-def find_all_by_id(job_id: list):
-    others_business = OthersBusiness.query.filter(OthersBusiness.id.in_(job_id)).all()
+def find_all_by_id(job_ids: tuple):
+    others_business = OthersBusiness.query.filter(OthersBusiness.id.in_(job_ids)).all()
+    print(others_business)
     if others_business:
         result = others_businesses_schema.dump(others_business)
-        return jsonify(result)
+        print(result)
+        return result
     else:
         return jsonify(message="The keycloakID does not exist or wrong status"), 404
 
@@ -24,12 +26,13 @@ def find_by_user_id(user_id: str, page: int, per_page: int):
     others_business = OthersBusiness.query.filter_by(created_by=user_id) \
         .paginate(page=page, per_page=per_page) \
         .items
-    # return others_business
+
     if others_business:
         # print("Rahul1")
-        result = others_businesses_schema.dump(others_business)
+        return others_business
+        # result = others_businesses_schema.dump(others_business)
         # print(result)
-        return jsonify(result), 200
+        # return result
     else:
         # print("Rahul2")
         return jsonify(message="The keycloakID does not exist or wrong status"), 404
@@ -41,7 +44,6 @@ def find_by_user_id_and_current_date(user_id: str, page: int, per_page: int):
                      OthersBusiness.created_date >= (datetime.now() - timedelta(days=30)))) \
         .paginate(page=page, per_page=per_page) \
         .items
-    #   .items
 
     if others_businesses:
         others_businesses_data = others_businesses_schema.dump(others_businesses)

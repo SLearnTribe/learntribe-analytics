@@ -4,14 +4,18 @@ import datetime
 class Commons:
     PATTERN_FORMAT = "yyyy-MM-dd"
 
-    def to_instant(self, date_str):
-        date = datetime.datetime.strptime(date_str, self.PATTERN_FORMAT).date()
+    @staticmethod
+    def to_instant(date_str):
+        date = datetime.datetime.strptime(date_str, Commons.PATTERN_FORMAT).date()
         return date.strftime("%s")
 
-    def format_instant(self, instant):
-        return datetime.datetime.fromtimestamp(int(instant)).strftime(self.PATTERN_FORMAT)
+    @staticmethod
+    def format_instant(instant: datetime):
+        unix_timestamp = instant.timestamp()
+        return datetime.datetime.fromtimestamp(unix_timestamp).strftime(Commons.PATTERN_FORMAT)
 
-    def to_string(self):
-        return f"Commons{{dateFormatter={self.PATTERN_FORMAT}, " \
-               f"instantFormatter={self.PATTERN_FORMAT}, " \
-               f"formatInstant=<function Commons.format_instant at {id(self.format_instant)}>}}"
+    @staticmethod
+    def to_string():
+        return f"Commons{{dateFormatter={Commons.PATTERN_FORMAT}, " \
+               f"instantFormatter={Commons.PATTERN_FORMAT}, " \
+               f"formatInstant=<function Commons.format_instant at {id(Commons.format_instant)}>}}"

@@ -5,6 +5,8 @@ flask_marshmallow==0.14.0
 Flask_SQLAlchemy==2.5.1
 jose==1.0.0
 marshmallow_enum==1.5.1
+psycopg2==2.9.5
 python_jose==3.3.0
 setuptools==60.2.0
 SQLAlchemy==1.4.45
+Werkzeug==2.1.2

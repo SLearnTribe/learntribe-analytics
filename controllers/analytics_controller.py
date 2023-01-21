@@ -1,6 +1,6 @@
 from flask_classful import FlaskView, route
 from flask import jsonify, request
-
+from authorization.jwt_verification import jwt_verification
 from service.analytics_service import AnalyticsService
 
 
@@ -11,7 +11,10 @@ class AnalyticsControllerView(FlaskView):
         return jsonify(message="invalid api, bad request"), 400
 
     @route('/candidate/activities', methods=['POST'])
-    def evaluate_candidate_activities(self):
+    # @jwt_verification # For production
+    # def evaluate_candidate_activities(self, decoded_jwt):
+    #     keycloak_id = decoded_jwt['sub']
+    def evaluate_candidate_activities(self):  # For Development
         keycloak_id = request.json['keyCloakId']
         if keycloak_id is None:
             return jsonify(message="Keycloak_id can't be empty"), 402
@@ -20,7 +23,10 @@ class AnalyticsControllerView(FlaskView):
         return result, 202
 
     @route('/candidate/jobs', methods=['POST'])
-    def evaluate_considered_jobs(self):
+    # @jwt_verification # For production
+    # def evaluate_considered_jobs(self, decoded_jwt):
+    #     keycloak_id = decoded_jwt['sub']
+    def evaluate_considered_jobs(self):  # For Development
         keycloak_id = request.json['keyCloakId']
         if keycloak_id is None:
             return jsonify(message="Keycloak_id can't be empty"), 402
@@ -28,7 +34,10 @@ class AnalyticsControllerView(FlaskView):
         return result, 202
 
     @route('/hr/activities', methods=['POST'])
-    def evaluate_hr_hirings(self):
+    # @jwt_verification # For production
+    # def evaluate_hr_hirings(self, decoded_jwt):
+    #     keycloak_id = decoded_jwt['sub']
+    def evaluate_hr_hirings(self):  # For Development
         keycloak_id = request.json['keyCloakId']
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('limit', 25, type=int)

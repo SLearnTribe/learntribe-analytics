@@ -1,5 +1,8 @@
 from flask_marshmallow import Marshmallow
+from flask_marshmallow.fields import fields
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow_enum import EnumField
+
 from models.enums.hiring_status import HiringStatus
 from models.enums.userObReltnType import UserObReltnType
 
@@ -16,7 +19,7 @@ class UserObReltn(db.Model):
     job_id = db.Column(db.Integer)
 
     def __repr__(self):
-        return f'<User {self.userId}>'
+        return f'<User {self.user_id}>'
 
 
 class UserObReltnSchema(ma.Schema):
@@ -27,3 +30,9 @@ class UserObReltnSchema(ma.Schema):
         #           "hiringStatus",
         #           "userObReltn",
         #           "jobId")
+
+    id = fields.Integer()
+    user_id = fields.String()
+    hiring_status = EnumField(enum=HiringStatus)
+    user_ob_reltn = EnumField(enum=UserObReltnType)
+    job_id = fields.Integer()
