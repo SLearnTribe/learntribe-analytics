@@ -23,3 +23,10 @@ Dependencies of current project
 
 Dependencies of current Environment
 - pip freeze > requirements.txt
+
+# Docker setup
+- docker build -t myapp:latest . 
+- docker run -p 8000:8000 myapp:latest
+
+# Docker compose
+- docker-compose up -d

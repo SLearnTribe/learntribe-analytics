@@ -3,4 +3,4 @@ services:
   web:
     build: .
     ports:
-      - "15351:15351"
+      - "8000:8000"
