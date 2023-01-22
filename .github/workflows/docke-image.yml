@@ -28,7 +28,7 @@ jobs:
 
     - name: Build the Docker image
       run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/flask_analytics:latest .
+          docker build -t flask_analytics:latest .
 
     - name: Publish the Docker image
       run: |
