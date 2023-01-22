@@ -56,4 +56,4 @@ def checks(decoded_jwt):
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=15351, debug=True)
+    app.run(debug=True)

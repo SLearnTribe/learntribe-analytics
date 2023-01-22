@@ -8,7 +8,7 @@ class AnalyticsControllerView(FlaskView):
     analytics_service = AnalyticsService()
 
     def index(self):
-        return jsonify(message="invalid api, bad request"), 400
+        return jsonify(message="<h1>Invalid api, bad request</h1>"), 400
 
     @route('/candidate/activities', methods=['POST'])
     # @jwt_verification # For production
