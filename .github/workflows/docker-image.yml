@@ -33,4 +33,5 @@ jobs:
     - name: Publish the Docker image
       run: |
         echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u "smilebat96" --password-stdin
+        docker tag flask_analytics:latest smilebat96/flask_analytics:latest
         docker push smilebat96/flask_analytics:latest
