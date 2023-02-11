@@ -1,4 +1,4 @@
-name: Flask Analytics
+name: Learntribe Analytics
 
 on:
   push:
@@ -33,5 +33,5 @@ jobs:
     - name: Publish the Docker image
       run: |
         echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u "smilebat96" --password-stdin
-        docker tag flask_analytics:latest smilebat96/sb-analytics:latest
+        docker tag sb-analytics:latest smilebat96/sb-analytics:latest
         docker push smilebat96/sb-analytics:latest
