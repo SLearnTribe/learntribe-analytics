@@ -8,6 +8,7 @@ jose==1.0.0
 marshmallow_enum==1.5.1
 psycopg2-binary==2.9.5
 python_jose==3.3.0
+python-consul==1.1.0
 setuptools==60.2.0
 SQLAlchemy==1.4.45
 Werkzeug==2.1.2

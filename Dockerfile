@@ -13,13 +13,14 @@ WORKDIR /app
 #RUN python -m venv ./venv
 #ENV PATH="/venv/bin:$PATH"
 
-RUN pip install --upgrade pip
+# RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
 # Production
-CMD ["gunicorn", "-c", "gunicorn.conf", "main:app"]
+# CMD ["gunicorn", "-c", "gunicorn.conf", "main:app"]
+
 # Development
-# ENTRYPOINT [ "python" ]
-# CMD ["main.py"]
+ENTRYPOINT [ "python" ]
+CMD ["main.py"]
