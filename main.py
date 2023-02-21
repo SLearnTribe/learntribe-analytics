@@ -16,7 +16,7 @@ from dataaccess.entity.usrAstReltn import *
 app = Flask(__name__)
 # Format : sql://username:password@uri/db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://keycloak:password@38.242.132.44:5432/inquisitve'
-CORS(app)
+CORS(app, resources={r"/api/v1/analytics": {"origins": ["https://www.smilebat.xyz", "http://localhost:3000"]}})
 db.init_app(app)
 ma.init_app(app)
 consul_client = consul.Consul(host='38.242.132.44', port=8500)
@@ -44,6 +44,7 @@ def register_service_with_consul(port):
 def deregister_service_with_consul():
     # return
     consul_client.agent.service.deregister(service_id)
+
 
 '''  Used for testing DB put
 @app.cli.command('db_create')
@@ -76,7 +77,6 @@ def db_seed():
     db.session.commit()
     print('data filled in tables')
 '''
-
 
 AnalyticsControllerView.register(app, route_base='/api/v1/analytics')
 
