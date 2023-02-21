@@ -30,3 +30,9 @@ Dependencies of current Environment
 
 # Docker compose
 - docker-compose up -d
+
+
+# Environment variables
+- ISSUER
+- KEYCLOAK_PUBLIC_KEY
+- CONSUL_URL
