@@ -32,7 +32,7 @@ def register_service_with_consul(port):
         name="sb-ana",
         service_id=service_id,
         port=port,
-        address="38.242.132.44",
+        address="sb-ana",
         tags=[],
         #http="http://localhost:"+str(port)+"/actuator/health",interval='10s'
      
