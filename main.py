@@ -33,6 +33,7 @@ def register_service_with_consul(port):
         service_id=service_id,
         port=port,
         address="sb-ana",
+
         tags=[],
         #http="http://localhost:"+str(port)+"/actuator/health",interval='10s'
      
@@ -58,7 +59,7 @@ def health_check():
 
 if __name__ == "__main__":
     try:
-        port = get_free_port()
+        port = 8080
         print(f"RJ : {port}")
         register_service_with_consul(port)
         app.run(port=port, debug=True, use_reloader=False)
