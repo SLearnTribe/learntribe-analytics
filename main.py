@@ -31,9 +31,12 @@ def register_service_with_consul(port):
     consul_client.agent.service.register(
         name="sb-ana",
         service_id=service_id,
-        address="host.docker.internal",
         port=port,
-        #check=consul.Check.http("/actuator/health", port, "30s")
+        address="38.242.132.44",
+        tags=[],
+        #http="http://localhost:"+str(port)+"/actuator/health",interval='10s'
+     
+        #check=consul.Check.http('http://localhost:'+str(port)+'/actuator/health', "1s")
     )
 
 
