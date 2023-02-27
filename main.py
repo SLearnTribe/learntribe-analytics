@@ -17,7 +17,7 @@ CORS(app, resources={r"/api/v1/analytics": {"origins": ["http://www.smilebat.xyz
 db.init_app(app)
 ma.init_app(app)
 consul_client = consul.Consul(host="38.242.132.44", port=8500)
-service_id = f"flask_app_{str(uuid.uuid4())}"
+service_id = f"sb-ana-{str(uuid.uuid4())}"
 
 
 def get_free_port():
@@ -33,7 +33,7 @@ def register_service_with_consul(port):
         service_id=service_id,
         address="/api/v1/analytics",
         port=port,
-        check=consul.Check.http("/actuator/health", port, "30s")
+        #check=consul.Check.http("/actuator/health", port, "30s")
     )
 
 
