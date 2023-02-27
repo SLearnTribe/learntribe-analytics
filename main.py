@@ -28,12 +28,12 @@ def get_free_port():
 
 
 def register_service_with_consul(port):
+    print('this : ' +socket.gethostname())
     consul_client.agent.service.register(
         name="sb-ana",
         service_id=service_id,
         port=port,
-        address="sb-ana",
-
+        address=socket.gethostname(),
         tags=[],
         #http="http://localhost:"+str(port)+"/actuator/health",interval='10s'
      
@@ -59,7 +59,7 @@ def health_check():
 
 if __name__ == "__main__":
     try:
-        port = 8080
+        port = get_free_port()
         print(f"RJ : {port}")
         register_service_with_consul(port)
         app.run(port=port, debug=True, use_reloader=False)
