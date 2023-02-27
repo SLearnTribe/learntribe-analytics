@@ -31,9 +31,9 @@ def register_service_with_consul(port):
     consul_client.agent.service.register(
         name="sb-ana",
         service_id=service_id,
-        address="localhost/api/v1/analytics",
+        address="/api/v1/analytics",
         port=port,
-        check=consul.Check.http("localhost/health", port, "30s")
+        check=consul.Check.http("/actuator/health", port, "30s")
     )
 
 
@@ -44,14 +44,7 @@ def deregister_service_with_consul():
 AnalyticsControllerView.register(app, route_base='/api/v1/analytics')
 
 
-@app.route('/validate', methods=['GET'])
-@jwt_verification
-def checks(decoded_jwt):
-    return json.dumps({"message": "JWT verified",
-                       "sub": decoded_jwt['sub']})
-
-
-@app.route("/health", methods=['GET'])
+@app.route("/actuator/health", methods=['GET'])
 def health_check():
     health_check_is_successful = True
     if health_check_is_successful:

@@ -1,3 +1,5 @@
+import json
+
 from flask_classful import FlaskView, route
 from flask import jsonify, request
 from authorization.jwt_verification import jwt_verification
@@ -53,3 +55,8 @@ class AnalyticsControllerView(FlaskView):
                                                                            page=page,
                                                                            per_page=per_page)
         return result, 202
+
+    @route('/validate', methods=['GET'])
+    @jwt_verification
+    def checks(self, decoded_jwt):
+        return json.dumps({"message": "JWT verified", "sub": decoded_jwt['sub']})
