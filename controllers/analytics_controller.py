@@ -12,35 +12,38 @@ class AnalyticsControllerView(FlaskView):
     def index(self):
         return jsonify(message="<h1>Invalid api, bad request</h1>"), 400
 
-    @route('/candidate/activities', methods=['POST'])
+    @route('/candidate/activities', methods=['GET'])
     # @jwt_verification # For production
     # def evaluate_candidate_activities(self, decoded_jwt):
     #     keycloak_id = decoded_jwt['sub']
-    def evaluate_candidate_activities(self):  # For Development
-        keycloak_id = request.json['keyCloakId']
+    @jwt_verification
+    def evaluate_candidate_activities(self, decoded_jwt):  # For Development
+        keycloak_id = decoded_jwt['sub']
         if keycloak_id is None:
             return jsonify(message="Keycloak_id can't be empty"), 402
         result = self.analytics_service.retrieve_candidate_activities(keycloak_id=keycloak_id)
 
         return result, 202
 
-    @route('/candidate/jobs', methods=['POST'])
+    @route('/candidate/jobs', methods=['GET'])
     # @jwt_verification # For production
     # def evaluate_considered_jobs(self, decoded_jwt):
     #     keycloak_id = decoded_jwt['sub']
-    def evaluate_considered_jobs(self):  # For Development
-        keycloak_id = request.json['keyCloakId']
+    @jwt_verification
+    def evaluate_considered_jobs(self,decoded_jwt):  # For Development
+        keycloak_id = decoded_jwt['sub']
         if keycloak_id is None:
             return jsonify(message="Keycloak_id can't be empty"), 402
         result = self.analytics_service.retrieve_considered_jobs(keycloak_id=keycloak_id)
         return result, 202
 
-    @route('/hr/activities', methods=['POST'])
+    @route('/hr/activities', methods=['GET'])
     # @jwt_verification # For production
     # def evaluate_hr_hirings(self, decoded_jwt):
     #     keycloak_id = decoded_jwt['sub']
-    def evaluate_hr_hirings(self):  # For Development
-        keycloak_id = request.json['keyCloakId']
+    @jwt_verification
+    def evaluate_hr_hirings(self,decoded_jwt):  # For Development
+        keycloak_id = decoded_jwt['sub']
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('limit', 25, type=int)
         category = request.args.get('category')
