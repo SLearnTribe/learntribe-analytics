@@ -16,11 +16,11 @@ WORKDIR /app
 # RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-EXPOSE 8000
+#EXPOSE 8000
 
 # Production
 # CMD ["gunicorn", "-c", "gunicorn.conf", "main:app"]
 
 # Development
-ENTRYPOINT [ "python" ]
-CMD ["main.py"]
+# ENTRYPOINT [ "python" ]
+CMD ["stdbuf","-oL","python","main.py"]

@@ -1,10 +1,10 @@
-import json
-import os
 import uuid
 from flask import Flask
 from flask_cors import CORS
 import consul
 import socket
+import atexit
+import logging
 from authorization.jwt_verification import jwt_verification
 from controllers.analytics_controller import *
 from dataaccess.entity.userObReltn import *
@@ -16,33 +16,39 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://keycloak:password@38.242.1
 CORS(app, resources={r"/api/v1/analytics": {"origins": ["http://www.smilebat.xyz", "http://localhost:3000"]}})
 db.init_app(app)
 ma.init_app(app)
-consul_client = consul.Consul(host="38.242.132.44", port=8500)
+consul_client = consul.Consul(host="consul", port=8500)
 service_id = f"sb-ana-{str(uuid.uuid4())}"
 
-
 def get_free_port():
+    logging.info("Evaluating free ports")
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("", 0))
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         return s.getsockname()[1]
 
 
-def register_service_with_consul(port):
-    print('this : ' +socket.gethostname())
-    consul_client.agent.service.register(
-        name="sb-ana",
-        service_id=service_id,
-        port=port,
-        address=socket.gethostname(),
-        tags=[],
-        #http="http://localhost:"+str(port)+"/actuator/health",interval='10s'
-     
-        #check=consul.Check.http('http://localhost:'+str(port)+'/actuator/health', "1s")
-    )
+def register_service_with_consul(host,port):
+    logging.info('Registering to Consul with Hostname : ' + host)
+    try: 
+       consul_client.agent.service.register(
+          name="sb-ana",
+          service_id=service_id,
+          port=port,
+          address=host,
+          tags=[],
+          check=consul.Check.http(url='http://'+host+':'+str(port)+'/actuator/health',interval='30s',timeout='5s')
+      )
+    except(ConnectionError):
+      logging.info('Consul Host is down')
+    
 
-
+@atexit.register
 def deregister_service_with_consul():
-    consul_client.agent.service.deregister(service_id)
+    logging.info('De-Registering '+ service_id +' from Consul')
+    nodes = consul_client.catalog.nodes()
+    node_name = nodes[1][0]['Node']
+    consul_client.catalog.deregister(node=node_name,service_id=service_id)
+    consul_client.catalog.deregister(node=node_name,check_id='service:'+service_id)
 
 
 AnalyticsControllerView.register(app, route_base='/api/v1/analytics')
@@ -59,11 +65,11 @@ def health_check():
 
 if __name__ == "__main__":
     try:
+        host=socket.gethostname()
         port = get_free_port()
-        print(f"RJ : {port}")
-        register_service_with_consul(port)
-        app.run(port=port, debug=True, use_reloader=False)
+        register_service_with_consul(host,port)
+        app.run(host='0.0.0.0',port=port, debug=True, use_reloader=False)
     except Exception as e:
-        print(f"Exception : {e}")
+        logging.info(f"Exception : {e}")
     finally:
         deregister_service_with_consul()
