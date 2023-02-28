@@ -18,6 +18,7 @@ db.init_app(app)
 ma.init_app(app)
 consul_client = consul.Consul(host="38.242.132.44", port=8500)
 service_id = f"flask_app_{str(uuid.uuid4())}"
+print(service_id)
 
 
 def get_free_port():
@@ -31,9 +32,9 @@ def register_service_with_consul(port):
     consul_client.agent.service.register(
         name="sb-ana",
         service_id=service_id,
-        address="/api/v1/analytics",
+        address=socket.gethostname(),
         port=port,
-        check=consul.Check.http("/actuator/health", port, "30s")
+        check=consul.Check.http(url=f'http://{socket.gethostname()}:{port}/health', interval='5s')
     )
 
 
@@ -44,21 +45,23 @@ def deregister_service_with_consul():
 AnalyticsControllerView.register(app, route_base='/api/v1/analytics')
 
 
-@app.route("/actuator/health", methods=['GET'])
+@app.route("/health", methods=['GET'])
 def health_check():
+    # Health check logic
     health_check_is_successful = True
     if health_check_is_successful:
-        return {"status": "ok"}, 200
+        return jsonify({"status": "ok"}, 200)
     else:
-        return {"status": "not ok"}, 500
+        return jsonify({"status": "Not ok"}, 500)
 
 
 if __name__ == "__main__":
     try:
         port = get_free_port()
+        # port = 8153
         print(f"RJ : {port}")
         register_service_with_consul(port)
-        app.run(port=port, debug=True, use_reloader=False)
+        app.run(host='0.0.0.0', port=port, debug=True, use_reloader=False)
     except Exception as e:
         print(f"Exception : {e}")
     finally:
