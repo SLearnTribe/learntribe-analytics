@@ -13,7 +13,13 @@ from dataaccess.entity.usrAstReltn import *
 app = Flask(__name__)
 # Format : sql://username:password@uri/db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://keycloak:password@38.242.132.44:5432/inquisitve'
-CORS(app, resources={r"/api/v1/*": {"origins": "*","methods": "*","allow_headers":"*"}})
+CORS(app, resources={r"/api/v1/*": {"origins": ['www.smilebat.xyz','http://localhost:3000'],
+                                    "methods":['GET,PUT,POST,DELETE'],
+                                    "allow_headers":['authorization','Content-Type'],
+                                    "vary_header":['Access-Control-Request-Method',
+                                                   'Origin',
+                                                   'Access-Control-Request-Headers'],
+                                                   }})
 db.init_app(app)
 ma.init_app(app)
 consul_client = consul.Consul(host="consul", port=8500)
