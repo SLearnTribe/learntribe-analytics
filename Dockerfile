@@ -19,8 +19,8 @@ RUN pip install -r requirements.txt
 #EXPOSE 8000
 
 # Production
-# CMD ["gunicorn", "-c", "gunicorn.conf", "main:app"]
+CMD ["gunicorn", "-c", "gunicorn.conf", "main:app"]
 
 # Development
 # ENTRYPOINT [ "python" ]
-CMD ["stdbuf","-oL","python","main.py"]
+# CMD ["stdbuf","-oL","python","main.py"]

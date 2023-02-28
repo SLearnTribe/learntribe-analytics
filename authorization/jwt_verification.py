@@ -37,21 +37,26 @@ def jwt_verification(f):
 
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        if len(request.headers.get("Authorization"))==0:
+            return json.dumps({"error": "Invalid JWT"}), 401  # Unauthorized
         jwt_token = request.headers.get("Authorization").split(" ")[1]
 
         try:
             decoded_jwt = jwt.decode(jwt_token, KEYCLOAK_PUBLIC_KEY,
                                      algorithms=["PS384", "ES384", "RS384", "HS256", "HS512", "ES256", "RS256", "HS384",
-                                                 "ES512", "PS256", "PS512", "RS512"], issuer=ISSUER)
+                                                 "ES512", "PS256", "PS512", "RS512"],
+                                     issuer=ISSUER,
+                                     audience='account')
         except jwt.ExpiredSignatureError:
             return json.dumps({"error": "JWT has expired"}), 419  # Authentication Timeout
-        except jwt.JWTClaimsError:
+        except jwt.JWTClaimsError as e:
+            print("Exception ######### "+str(e))
             return json.dumps({"error": "JWT has invalid claims"}), 400  # Bad Request
         except jwt.JWTError:
             return json.dumps({"error": "Invalid JWT"}), 401  # Unauthorized
         except Exception as e:
             return json.dumps({"error": str(e)}), 500  # Internal Server Error
-
-        return f(decoded_jwt, *args, **kwargs)
+        # print("Inside## "+decoded_jwt['sub'])
+        return f(keycloak_id=decoded_jwt['sub'], *args, **kwargs)
 
     return decorated_function

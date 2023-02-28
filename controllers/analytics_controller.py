@@ -14,8 +14,8 @@ class AnalyticsControllerView(FlaskView):
 
     @route('/candidate/activities', methods=['GET'])
     @jwt_verification
-    def evaluate_candidate_activities(self, decoded_jwt):  # For Development
-        keycloak_id = decoded_jwt['sub']
+    def evaluate_candidate_activities(self, keycloak_id):  # For Development
+        keycloak_id = keycloak_id['sub']
         if keycloak_id is None:
             return jsonify(message="Keycloak_id can't be empty"), 402
         result = self.analytics_service.retrieve_candidate_activities(keycloak_id=keycloak_id)
@@ -24,8 +24,8 @@ class AnalyticsControllerView(FlaskView):
 
     @route('/candidate/jobs', methods=['GET'])
     @jwt_verification
-    def evaluate_considered_jobs(self, decoded_jwt):  # For Development
-        keycloak_id = decoded_jwt['sub']
+    def evaluate_considered_jobs(self, keycloak_id):  # For Development
+        keycloak_id = keycloak_id['sub']
         if keycloak_id is None:
             return jsonify(message="Keycloak_id can't be empty"), 402
         result = self.analytics_service.retrieve_considered_jobs(keycloak_id=keycloak_id)
@@ -33,8 +33,8 @@ class AnalyticsControllerView(FlaskView):
 
     @route('/hr/activities', methods=['GET'])
     @jwt_verification
-    def evaluate_hr_hirings(self, decoded_jwt):  # For Development
-        keycloak_id = decoded_jwt['sub']
+    def evaluate_hr_hirings(self, keycloak_id):  # For Development
+        keycloak_id = keycloak_id['sub']
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('limit', 25, type=int)
         category = request.args.get('category')
@@ -52,5 +52,6 @@ class AnalyticsControllerView(FlaskView):
 
     @route('/validate', methods=['GET'])
     @jwt_verification
-    def checks(self, decoded_jwt):
-        return json.dumps({"message": "JWT verified", "sub": decoded_jwt['sub']})
+    def checks(self, keycloak_id):
+        # print("RJ####"+keycloak_id)
+        return json.dumps({"message": "JWT verified"})
