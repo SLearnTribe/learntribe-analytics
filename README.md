@@ -1,3 +1,5 @@
+# Builds
+[![Continuos Itegration](https://github.com/SLearnTribe/learntribe-analytics/actions/workflows/Continuos%20Integration.yml/badge.svg)](https://github.com/SLearnTribe/learntribe-analytics/actions/workflows/Continuos%20Integration.yml)
 # Flask Application
 This is a Flask application that serves as a rest api calls for analytics.
 
