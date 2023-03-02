@@ -91,5 +91,5 @@ class OthersBusinessSchema(ma.Schema):
     #           "location",
     #           "createdDate",
     #           "JobStatus",
-    #           "employmentType"
+    #           "employmentType",
     #           "salaryBudget")
