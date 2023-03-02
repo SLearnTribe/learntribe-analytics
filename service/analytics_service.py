@@ -43,12 +43,12 @@ class AnalyticsService:
 
         completed_assessments = count_by_user_id_and_filter(keycloak_id=keycloak_id,
                                                             status="COMPLETED")
-        interview_calls = count_by_user_id_and_status(keycloak_id=keycloak_id,
+        jobsApplied = count_by_user_id_and_status(keycloak_id=keycloak_id,
                                                       hiring_status="IN_PROGRESS")
-        # return jsonify(interview_calls)
+        # return jsonify(jobsApplied)
 
         candidate_activities_response = CandidateActivitiesResponse(completed=completed_assessments,
-                                                                    interview_calls=interview_calls,
+                                                                    jobsApplied=jobsApplied,
                                                                     jobs_applied=0)
         return json.dumps(candidate_activities_response.__dict__)
 
