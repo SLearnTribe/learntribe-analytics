@@ -3,7 +3,7 @@ from flask_marshmallow.fields import fields
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow_enum import EnumField
 
-from models.enums.hiring_status import HiringStatus
+from models.enums.hiringStatus import HiringStatus
 from models.enums.userObReltnType import UserObReltnType
 
 db = SQLAlchemy()
