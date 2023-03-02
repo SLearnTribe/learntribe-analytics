@@ -1,0 +1,29 @@
+name: Continuos Itegration
+
+on:
+  push:
+    branches: [ "main" ]
+#     tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+#     env:
+#       VERSION_TAG: ${{ env.VERSION_TAG }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+       run: |
+         pip install --upgrade pip
+         pip install -r requirements.txt

@@ -1,9 +1,12 @@
-name: Learntribe Analytics
+name: Package Release Next Dev Iteration
 
 on:
-  push:
-    branches: [ "main" ]
-#     tags: [ 'v*.*.*' ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Bump Version
+        default: 1.0.0
+        required: true
 
 jobs:
   build-and-publish:
@@ -20,7 +23,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-
 #     - name: Install dependencies
 #       run: |
 #         pip install --upgrade pip
@@ -35,3 +37,13 @@ jobs:
         echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u "smilebat96" --password-stdin
         docker tag sb-analytics:latest smilebat96/sb-analytics:latest
         docker push smilebat96/sb-analytics:latest
+        
+    - name: Build the Docker image With Version
+      run: |
+          docker build -t sb-analytics:'${{ github.event.inputs.version }}' .
+
+    - name: Publish the Docker image
+      run: |
+        echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u "smilebat96" --password-stdin
+        docker tag sb-analytics:'${{ github.event.inputs.version }}' smilebat96/sb-analytics:'${{ github.event.inputs.version }}'
+        docker push smilebat96/sb-analytics:'${{ github.event.inputs.version }}'
