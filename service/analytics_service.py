@@ -49,7 +49,7 @@ class AnalyticsService:
 
         candidate_activities_response = CandidateActivitiesResponse(completed=completed_assessments,
                                                                     jobsApplied=jobsApplied,
-                                                                    jobs_applied=0)
+                                                                    jobsApplied=0)
         return json.dumps(candidate_activities_response.__dict__)
 
     def retrieve_considered_jobs(self, keycloak_id: str):
