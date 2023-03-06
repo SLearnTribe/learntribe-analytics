@@ -52,3 +52,5 @@ class AnalyticsControllerView(FlaskView):
     def checks(self, keycloak_id):
         # print("RJ####"+keycloak_id)
         return json.dumps({"message": "JWT verified"})
+
+

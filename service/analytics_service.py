@@ -49,7 +49,7 @@ class AnalyticsService:
 
         candidate_activities_response = CandidateActivitiesResponse(completed=completed_assessments,
                                                                     jobsApplied=jobsApplied,
-                                                                    jobsApplied=0)
+                                                                    interviewScheduled=0)#ask why
         return json.dumps(candidate_activities_response.__dict__)
 
     def retrieve_considered_jobs(self, keycloak_id: str):
@@ -63,7 +63,7 @@ class AnalyticsService:
         '''take out job_id from above result'''
         job_ids = tuple(job_id['id'] for job_id in in_progress)
         print(job_ids)
-        job_ids = (95, 140)  # For Test purpose
+        #job_ids = (95, 140)   For Test purpose
         result = find_all_by_id(job_ids=job_ids)
         return jsonify(result)
 
