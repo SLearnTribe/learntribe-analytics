@@ -1,8 +1,8 @@
 class CandidateActivitiesResponse:
-    def __init__(self, completed, jobsApplied, interview_calls):
+    def __init__(self, completed, jobs_applied, interview_scheduled):
         self.completed = completed
-        self.jobsApplied = jobsApplied
-        self.interview_calls = interview_calls
+        self.jobsApplied = jobs_applied
+        self.interviewScheduled = interview_scheduled
 
     def __getattr__(self, name: str):
         return self.__dict__[f"{name}"]
