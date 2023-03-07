@@ -8,7 +8,7 @@ from dataaccess.entity.othersBusiness import OthersBusiness
 from dataaccess.entity.userObReltn import UserObReltn
 from dataaccess.othersBusinessRepository import find_all_by_id, find_by_user_id, find_by_user_id_and_current_date
 from models.response.candidate_activities_response import CandidateActivitiesResponse
-from dataaccess.userAstReltnRepository import count_by_user_id_and_filter
+from dataaccess.userAstReltnRepository import count_by_user_id_and_filter, find_by_user_id_and_filter
 from dataaccess.userObReltnRepository import count_by_user_id_and_status, find_by_user_id_and_status, \
     count_by_job_hiring_status
 from models.response.hr_hiriing_response import HrHiringsResponse, HrHiringsResponseSchema
@@ -100,3 +100,9 @@ class AnalyticsService:
                 responses.append(response)
 
         return jsonify({"hiring_responses": responses})
+
+    def evaluate_report(self, user_id):
+        #result = find_by_user_id_and_filter(user_id, 'COMPLETED')
+        result = find_by_user_id_and_filter(user_id, 'PENDING')
+        # print(result)
+        return result

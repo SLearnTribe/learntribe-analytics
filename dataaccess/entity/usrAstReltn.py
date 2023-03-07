@@ -15,6 +15,8 @@ class UserAstReltn(db.Model):
     assessment_title = db.Column(db.String)
     status = db.Column(db.Enum(AssessmentStatus))
     user_ast_reltn_type = db.Column(db.Enum(UserAstReltnType))
+    questions = db.Column(db.Integer)
+    answered = db.Column(db.Integer)
 
     def __repr__(self):
         return f'<User {self.userId}>'
@@ -23,9 +25,11 @@ class UserAstReltn(db.Model):
 class UserAstReltnSchema(ma.Schema):
     class Meta:
         model = UserAstReltn
-        # fields = ("id",
-        #           "userId",
-        #           "assessmentId",
-        #           "assessmentTitle",
-        #           "status",
-        #           "userAstReltnType")
+        fields = ("id",
+                  "user_id",
+                  "assessment_id",
+                  "assessment_title",
+                  "status",
+                  "user_ast_reltn_type",
+                  "questions",
+                  "answered")

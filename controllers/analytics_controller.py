@@ -47,6 +47,17 @@ class AnalyticsControllerView(FlaskView):
                                                                            per_page=per_page)
         return result, 202
 
+    @route('/report', methods=['GET'])
+    # @jwt_verification # For production
+    # def evaluate_candidate_activities(self, keycloak_id):
+    def get_report(self):  # For Development
+        keycloak_id = request.json['keyCloakId']
+        if keycloak_id is None:
+            return jsonify(message="Keycloak_id can't be empty"), 402
+        user_id = request.json['user_id']
+        result = self.analytics_service.evaluate_report(user_id)
+        return result, 202
+
     @route('/validate', methods=['GET'])
     @jwt_verification
     def checks(self, keycloak_id):

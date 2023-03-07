@@ -3,8 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 from dataaccess.entity.usrAstReltn import UserAstReltn, UserAstReltnSchema
 
-app = Flask(__name__)
-db = SQLAlchemy(app)
+# app = Flask(__name__)
+# db = SQLAlchemy(app)
 user_ast_reltn_schema = UserAstReltnSchema()
 users_ast_reltn_schema = UserAstReltnSchema(many=True)
 
@@ -19,10 +19,10 @@ def find_by_user_id(keycloak_id: str):
 
 
 def find_by_user_id_and_filter(keycloak_id: str, status: str):
-    user_ast_reltn = UserAstReltn.query.filter_by(userId=keycloak_id, status=status).all()
+    user_ast_reltn = UserAstReltn.query.filter_by(user_id=keycloak_id, status=status).all()
     if user_ast_reltn:
         result = users_ast_reltn_schema.dump(user_ast_reltn)
-        return jsonify(result)
+        return jsonify(re)
     else:
         return jsonify(message="The keycloakID does not exist or wrong status"), 404
 

@@ -21,8 +21,8 @@ CORS(app, resources={r"/api/v1/*": {"origins": ['www.smilebat.xyz', 'http://loca
                                     }})
 db.init_app(app)
 ma.init_app(app)
-consul_client = consul.Consul(host="consul", port=8500)
-# consul_client = consul.Consul(host="www.smilebat.xyz", port=8500)
+# consul_client = consul.Consul(host="consul", port=8500)
+consul_client = consul.Consul(host="www.smilebat.xyz", port=8500)
 service_id = f"sb-ana-{str(uuid.uuid4())}"
 logging.basicConfig(level=logging.NOTSET)
 logger = logging.getLogger('sb-ana')
@@ -72,8 +72,8 @@ def health_check():
 if __name__ == "__main__":
     try:
         host = socket.gethostname()
-        port = get_free_port()
-        # port=8153
+        # port = get_free_port()
+        port=8153
         register_service_with_consul(host, port)
         app.run(host='0.0.0.0', port=port, debug=True, use_reloader=False)
     except Exception as e:
