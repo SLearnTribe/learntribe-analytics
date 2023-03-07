@@ -16,16 +16,17 @@ class OthersBusiness(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     title = db.Column(db.String(length=None))
     description = db.Column(db.String(length=None))
-    roles_and_responsibilities = db.Column(db.String(length=None))
-    qualification_required = db.Column(db.String(length=None))
-    required_skills = db.Column(db.String(length=None))
-    experience_required = db.Column(db.Integer)
-    created_by = db.Column(db.String(length=None))
-    business_name = db.Column(db.String(length=None))
+    rolesAndResponsibilities = db.Column(db.String(length=None))
+    qualificationRequired = db.Column(db.String(length=None))
+    requiredSkills = db.Column(db.String(length=None))
+    experienceRequired = db.Column(db.Integer)
+    createdBy = db.Column(db.String(length=None))
+    businessName = db.Column(db.String(length=None))
     location = db.Column(db.String(length=None))
-    created_date = db.Column(db.DateTime)
+    createdDate = db.Column(db.DateTime)
     status = db.Column(db.Enum(JobStatus))
-    employment_type = db.Column(db.Enum(EmploymentType))
+    employmentType = db.Column(db.Enum(EmploymentType))
+    salaryBudget = db.column(db.Integer)
 
     # id = db.Column("id", db.Integer, primary_key=True, nullable=False)
     # title = db.Column("title", db.LargeBinary)
@@ -50,19 +51,20 @@ class OthersBusinessSchema(ma.Schema):
         model = OthersBusiness
 
     id = fields.Integer(dump_only=True)
-    title = fields.String()
+    businessName = fields.String()
+    createdBy = fields.String()
+    createdDate = fields.DateTime()
     description = fields.String()
-    roles_and_responsibilities = fields.String()
-    qualification_required = fields.String()
-    required_skills = fields.String()
-    experience_required = fields.Integer()
-    created_by = fields.String()
-    business_name = fields.String()
+    employmentType = EnumField(enum=EmploymentType)
+    experienceRequired = fields.Integer()
     location = fields.String()
-    created_date = fields.DateTime()
-    job_status = EnumField(enum=JobStatus)
-    employment_type = EnumField(enum=EmploymentType)
-
+    qualificationRequired = fields.String()
+    requiredSkills = fields.String()
+    rolesAndResponsibilities = fields.String()
+    status = EnumField(enum=JobStatus)
+    title = fields.String()
+    salaryBudget = fields.Integer()
+    
     # id = ma.fields.Int(required=True)
     # title = ma.fields.Str()
     # description = ma.fields.Str()
@@ -76,6 +78,7 @@ class OthersBusinessSchema(ma.Schema):
     # createdDate = ma.fields.DateTime()
     # JobStatus = ma.fields.Enum("JobStatus")
     # employmentType = ma.fields.Enum("EmploymentType")
+    # salaryBudget = ma.fields.Int()
     # fields = ("id",
     #           "title",
     #           "description",
@@ -88,4 +91,5 @@ class OthersBusinessSchema(ma.Schema):
     #           "location",
     #           "createdDate",
     #           "JobStatus",
-    #           "employmentType")
+    #           "employmentType",
+    #           "salaryBudget")

@@ -1,7 +1,7 @@
 class CandidateActivitiesResponse:
-    def __init__(self, completed, jobs_applied, interview_calls):
+    def __init__(self, completed, jobsApplied, interview_calls):
         self.completed = completed
-        self.jobs_applied = jobs_applied
+        self.jobsApplied = jobsApplied
         self.interview_calls = interview_calls
 
     def __getattr__(self, name: str):
@@ -11,9 +11,9 @@ class CandidateActivitiesResponse:
         self.__dict__[f"{name}"] = value
 
 # class CandidateActivitiesResponse:
-    # def __init__(self, completed, jobs_applied, interview_calls):
+    # def __init__(self, completed, jobsApplied, interview_calls):
     #     self._completed = completed
-    #     self._jobs_applied = jobs_applied
+    #     self._jobs_applied = jobsApplied
     #     self._interview_calls = interview_calls
     #
     # @property
@@ -25,11 +25,11 @@ class CandidateActivitiesResponse:
     #     self._completed = value
     #
     # @property
-    # def jobs_applied(self):
+    # def jobsApplied(self):
     #     return self._jobs_applied
     #
-    # @jobs_applied.setter
-    # def jobs_applied(self, value):
+    # @jobsApplied.setter
+    # def jobsApplied(self, value):
     #     self._jobs_applied = value
     #
     # @property

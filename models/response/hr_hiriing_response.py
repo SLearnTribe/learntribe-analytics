@@ -5,18 +5,22 @@ ma = Marshmallow()
 
 
 class HrHiringsResponse:
-    job_title = ""
+    businessName = ""
+    employmentType = ""
+    jobTitle = ""
     skills = ""
-    job_posted_on = ""
-    job_status = ""
-    job_count = 0
+    jobPostedOn = ""
+    jobStatus = ""
+    jobCount = 0
 
     def __init__(self):
-        self.job_title = ""
+        self.businessName = ""
+        self.employmentType = ""
+        self.jobTitle = ""
         self.skills = ""
-        self.job_posted_on = ""
-        self.job_status = ""
-        self.job_count = 0
+        self.jobPostedOn = ""
+        self.jobStatus = ""
+        self.jobCount = 0
 
     # def __getattr__(self, name: str):
     #     return self.__dict__[f"{name}"]
@@ -24,13 +28,30 @@ class HrHiringsResponse:
     # def __setattr__(self, name: str, value):
     #     self.__dict__[f"{name}"] = value
 
+
     # @property
-    # def job_title(self):
-    #     return self.job_title
+    # def businessName(self):
+    #     return self.businessName
     #
-    # @job_title.setter
-    # def job_title(self, value):
-    #     self.job_title = value
+    # @businessName.setter
+    # def businessName(self, value):
+    #     self.businessName = value
+    #
+    # @property
+    # def employmentType(self):
+    #    return self.employmentType
+    # 
+    # @employmentType.setter
+    # def employmnetType(self,value):
+    #    self.employmentType = value 
+    #
+    # @property
+    # def jobTitle(self):
+    #     return self.jobTitle
+    #
+    # @jobTitle.setter
+    # def jobTitle(self, value):
+    #     self.jobTitle = value
     #
     # @property
     # def skills(self):
@@ -41,30 +62,30 @@ class HrHiringsResponse:
     #     self.skills = value
     #
     # @property
-    # def job_posted_on(self):
-    #     return self.job_posted_on
+    # def jobPostedOn(self):
+    #     return self.jobPostedOn
     #
-    # @job_posted_on.setter
-    # def job_posted_on(self, value):
-    #     self.job_posted_on = value
-    #
-    # @property
-    # def job_status(self):
-    #     return self.job_status
-    #
-    # @job_status.setter
-    # def job_status(self, value):
-    #     self.job_status = value
+    # @jobPostedOn.setter
+    # def jobPostedOn(self, value):
+    #     self.jobPostedOn = value
     #
     # @property
-    # def job_count(self):
-    #     return self.job_count
+    # def jobStatus(self):
+    #     return self.jobStatus
     #
-    # @job_count.setter
-    # def job_count(self, value):
-    #     self.job_count = value
+    # @jobStatus.setter
+    # def jobStatus(self, value):
+    #     self.jobStatus = value
+    #
+    # @property
+    # def jobCount(self):
+    #     return self.jobCount
+    #
+    # @jobCount.setter
+    # def jobCount(self, value):
+    #     self.jobCount = value
 
 
 class HrHiringsResponseSchema(ma.Schema):
     class Meta:
-        fields = ('job_title', 'skills', 'job_posted_on', 'job_status', 'job_count')
+        fields = ('employmentType', 'businessName' ,'jobTitle', 'skills', 'jobPostedOn', 'jobStatus', 'jobCount')
