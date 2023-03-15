@@ -42,7 +42,14 @@ def find_all_by_user_ast_reltn(keycloak_id: str, assessment_id: str):
         return jsonify(result), 200
     else:
         return jsonify(message="The keycloakID does not exist or wrong status"), 404
-
+    
+def find_by_user_ast_reltn(keycloak_id: str, assessment_id: str):
+    user_ast_reltn = UserAstReltn.query.filter_by(userId=keycloak_id, assessmentId=assessment_id)
+    if user_ast_reltn:
+        result = user_ast_reltn_schema.dump(user_ast_reltn)
+        return jsonify(result)
+    else:
+        return jsonify(message="The keycloakID does not exist or wrong status"), 404
 
 # def find_all_by_assessment_title(keycloak_id: str, skills: tuple):
 #     user_ast_reltn = UserAstReltn.query.filter_by(userId=keycloak_id, assessmentTitle.in_(skills)).all()

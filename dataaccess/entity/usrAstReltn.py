@@ -15,6 +15,8 @@ class UserAstReltn(db.Model):
     assessment_title = db.Column(db.String)
     status = db.Column(db.Enum(AssessmentStatus))
     user_ast_reltn_type = db.Column(db.Enum(UserAstReltnType))
+    answered = db.Column(db.Integer)
+    questions = db.Column(db.Integer)
 
     def __repr__(self):
         return f'<User {self.userId}>'
@@ -28,4 +30,6 @@ class UserAstReltnSchema(ma.Schema):
         #           "assessmentId",
         #           "assessmentTitle",
         #           "status",
-        #           "userAstReltnType")
+        #           "userAstReltnType",
+        #           "answered",
+        #           "questions")
